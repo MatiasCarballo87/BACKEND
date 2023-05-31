@@ -3,6 +3,7 @@ const socket = io();
 let sendProducts = () => { 
     socket.on("allProducts", (products)=> {
     const allP = document.getElementById("allproducts");
+    allP.innerHTML= "";
     products.map( (product) => {
         let element = document.createElement("div");
         allP.appendChild(element);
@@ -61,8 +62,8 @@ formCreate.addEventListener('submit', (e) => {
 const formDelete = document.getElementById("formDelete");
 formDelete.addEventListener('submit', (e) => {
     e.preventDefault();
-    const idProd = formDelete.elements.idProd.value;
-    socket.emit('delProd', idProd);
+    const id = formDelete.elements.id.value;
+    socket.emit('delProd', id);
     formDelete.reset();
     sendProducts();
 });

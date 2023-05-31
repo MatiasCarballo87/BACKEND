@@ -31,8 +31,8 @@ socketServer.on("connection", (socket)=> {
     socket.on("addProd", (formData) => {
         prodMan.addProduct(formData);
     });
-    socket.on("delProd", (idProd) => {
-        prodMan.deleteProduct(idProd);
+    socket.on("delProd", (id) => {
+        prodMan.deleteProduct(id);
     });
 });
 

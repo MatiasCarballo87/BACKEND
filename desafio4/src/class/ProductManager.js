@@ -3,7 +3,7 @@ import fs from 'fs';
 class ProductManager {
     constructor() {
         this.filePath = "./db/products.json"
-        this.products = [];
+        this.products = this.getProducts();
     }
     
     getProducts() {
@@ -59,16 +59,12 @@ class ProductManager {
     }
 
     deleteProduct(id) {
-        const idProd = fs.readFileSync(this.filePath);
-        const prodFind = JSON.parse(idProd);
-        const item = prodFind.filter((prod) => prod.id !== Number(id));
-        console.log(item);
+        const idProd = this.getProducts();
+        const item = idProd.filter((prod) => parseInt(prod.id) !== parseInt(id));
         fs.writeFileSync(this.filePath, JSON.stringify(item, null));
     }
 }
 
 const prodMan = new ProductManager();
-
-
 
 export default ProductManager;
