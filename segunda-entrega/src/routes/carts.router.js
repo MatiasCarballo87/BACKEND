@@ -44,6 +44,8 @@ cartsRouter.post('/:_cid/product/:_pid', async (req, res) => {
     try {
         const quantity = 1;
         const { _cid, _pid } = req.params;
+        await cartsServices.getCartById(_cid);
+        await productsService.getProductById(_pid);
         const prodsInCart = cartsServices.addProdToCartById(_cid, _pid, quantity);
         if (prodsInCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });

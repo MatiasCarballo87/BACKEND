@@ -16,16 +16,11 @@ class CartsServices {
         return cart_Id;
     };
 
-    async addProdToCartById(_id, _pid, quantity) {
-        const cartFinded = await CartsModel.findById(_id);
-        const product = cartFinded.products.find((e) => e._pid == _pid);
-        if (!product) {
-            cartFinded.products.push({ _pid: _pid, quantity });
-        } else {
-            product.quantity += quantity;
-        }
-        await cartFinded.save();
-        return cartFinded;
+    async addProdToCartById(_cid, _pid, quantity) {
+        const cartFinded = await CartsModel.find({_cid:_cid});
+        cartFinded.products.push({product: _pid});
+        const res = await CartsModel.updateOne({_cid: _cid}, cartFinded)        
+        return res;
     };
 
 }
