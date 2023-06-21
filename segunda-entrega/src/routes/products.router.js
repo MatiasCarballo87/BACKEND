@@ -5,15 +5,9 @@ export const productsRouter = express.Router();
 
 productsRouter.get('/', async (req, res) => {
     try {
-        const limit = req.query.limit;
-        if (limit) {
-            const allProd = await productsService.getProducts();
-            const cantProd = allProd.slice(0, limit);
-            return res.status(200).json({ status: "success", msg: "limit products", payload: cantProd });
-        }else{
-            const allProd = await productsService.getProducts();
-            return res.status(200).json({ status: "success", msg: "all products", payload: allProd });
-        }
+        const queryParams = req.query;
+        const response = await productsService.getProducts(queryParams);
+        return res.status(200).json({ status: "success", msg: "All Products", payload: response }); 
     } catch(e) {
         console.log(e);
         return res.status(500).json({

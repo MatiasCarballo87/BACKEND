@@ -1,13 +1,12 @@
 import express from "express";
 import { cartsServices } from "../services/carts.services.js";
-import { productsService } from "../services/products.services.js";
 export const cartsRouter = express.Router();
 
 
 cartsRouter.post('/', async (req, res) => {
     try {
         const { products } = req.body;
-        const cartCreated = await cartsServices.create({
+        const cartCreated = await cartsServices.createCart({
             products,
         });
         return res.status(201).json({ status: "success", msg: "cart created", payload: cartCreated });
@@ -42,11 +41,8 @@ cartsRouter.get('/:_cid', async (req, res) => {
 
 cartsRouter.post('/:_cid/product/:_pid', async (req, res) => {
     try {
-        const quantity = 1;
         const { _cid, _pid } = req.params;
-        await cartsServices.getCartById(_cid);
-        await productsService.getProductById(_pid);
-        const prodsInCart = cartsServices.addProdToCartById(_cid, _pid, quantity);
+        const prodsInCart = cartsServices.addProdToCartById(_cid, _pid);
         if (prodsInCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
         }else {
@@ -63,4 +59,80 @@ cartsRouter.post('/:_cid/product/:_pid', async (req, res) => {
 });
 
 
+cartsRouter.put('/:_cid', async (req, res) => {
+    try {
+        const { _cid, } = req.params;
+        const { products } = req.body;
+        const cart = cartsServices.updateCart(_cid, products);
+        if (cart) {
+            return res.status(201).json({ status: "success", msg: "added product", payload: cart });
+        }else {
+            return res.status(404).json({ status: "error", msg: "ID cart does not exist", payload: {} });
+        }
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+            status: "error",
+            msg: "something went wrong :(",
+            payload: {},
+        });
+    }
+});
 
+cartsRouter.put('/:_cid/product/:_pid', async (req, res) => {
+    try {
+        const { _cid, _pid } = req.params;
+        const { quantity } = req.body;
+        const prodsInCart = cartsServices.updateProdQuant(_cid, _pid, quantity);
+        if (prodsInCart) {
+            return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
+        }else {
+            return res.status(404).json({ status: "error", msg: "ID cart/product does not exist", payload: {} });
+        }
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+            status: "error",
+            msg: "something went wrong :(",
+            payload: {},
+        });
+    }
+});
+
+cartsRouter.delete('/:_cid/product/:_pid', async (req, res) => {
+    try {
+        const { _cid, _pid } = req.params;
+        const prodsInCart = cartsServices.removeProdInCart(_cid, _pid);
+        if (prodsInCart) {
+            return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
+        }else {
+            return res.status(404).json({ status: "error", msg: "ID cart/product does not exist", payload: {} });
+        }
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+            status: "error",
+            msg: "something went wrong :(",
+            payload: {},
+        });
+    }
+});
+
+cartsRouter.delete('/:_cid', async (req, res) => {
+    try {
+        const { _cid } = req.params;
+        const cleanCart = cartsServices.emptyCart(_cid);
+        if (cleanCart) {
+            return res.status(201).json({ status: "success", msg: "added product", payload: cleanCart });
+        }else {
+            return res.status(404).json({ status: "error", msg: "ID cart does not exist", payload: {} });
+        }
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+            status: "error",
+            msg: "something went wrong :(",
+            payload: {},
+        });
+    }
+});

@@ -1,7 +1,9 @@
+//@ts-check
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+const productsCollection = "products";
 
-export const ProductsModel = model(
-    "products",
+const productsSchema = (
     new Schema({
         title: { type: String, required: true, max: 100 },
         description: { type: String, required: true, max: 100 },
@@ -12,3 +14,9 @@ export const ProductsModel = model(
         thumbnail: { type: String, required: true, max: 100 },
     })
 );
+productsSchema.plugin(mongoosePaginate);
+
+const productsModel = model(productsCollection,productsSchema);
+
+export default productsModel;
+
