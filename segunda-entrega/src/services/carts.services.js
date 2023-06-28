@@ -1,4 +1,3 @@
-
 import cartsModel  from "../dao/models/carts.model.js";
 import productsModel from "../dao/models/products.model.js";
 
@@ -13,7 +12,7 @@ class CartsServices {
     };
 
     async getCartById(_cid) {
-        const cart_Id = await cartsModel.findById(_cid);
+        const cart_Id = await cartsModel.findById(_cid).populate("products.product");
         return cart_Id;
     };
 

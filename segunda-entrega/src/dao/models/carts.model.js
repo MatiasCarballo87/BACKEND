@@ -1,5 +1,6 @@
-import { Schema, model, mongoose } from "mongoose";
-const cartsCollection = "carts";
+//@ts-check
+import { Schema, model } from "mongoose";
+/* const cartsCollection = "carts"; */
 
 const cartsSchema = (
     new Schema({
@@ -7,18 +8,19 @@ const cartsSchema = (
             type: [ 
                 {
                     product: {
-                        type: mongoose.Schema.Types.ObjectId,
+                        type: Schema.Types.ObjectId,
                         ref: "products",
-                        required: true
+                        required: true,
                     },
-                    quantity: { type: Number},
+                    quantity: { type: Number, default: 1},
                 },
             ], 
-            default:[]
+            default:[],
         },
     })
 );
 
-const cartsModel = model(cartsCollection, cartsSchema);
+/* const cartsModel = model(cartsCollection, cartsSchema); */
+const cartsModel = model("carts", cartsSchema);
 
 export default cartsModel;

@@ -1,6 +1,8 @@
 <h1>Vista de Productos</h1>
 
-{{#each allProd}}
+<h2>Agregue un Producto a su Carrito</h2>
+
+{{#each productsRender}}
     <table>
         <tbody>
         <tr>
@@ -24,8 +26,18 @@
             <td>{{this._id}}</td>
         </tr>
         </tbody>
-    </table>    
+    </table>
+    <span>
+        <input type="submit" value="Add to Cart" class="button"/>
+    </span>    
 {{/each}}
 
-
-
+<p>Total Products: {{this.totalDocs}}</p>
+<p>Total Pages: {{this.totalPages}}</p>
+<p>Page: {{this.page}}</p>
+{{#if hasPrevPage}}
+<button>Prev page <a  href="http://localhost:8080/products?pages={{prevPage}}">{{prevPage}}</a></button>
+{{/if}}
+{{#if hasNextPage}}
+<button>Next page <a  href="http://localhost:8080/products?pages={{nextPage}}">{{nextPage}}</a></button>
+{{/if}}

@@ -2,7 +2,6 @@ import express from "express";
 import { productsService } from "../services/products.services.js";
 export const productsRouter = express.Router();
 
-
 productsRouter.get('/', async (req, res) => {
     try {
         const queryParams = req.query;
@@ -92,7 +91,7 @@ productsRouter.put('/:_pid', async (req, res) => {
                 thumbnail,
             });
             if (prodUpdated) {
-                return res.status(200).json({ status: "success", msg: "product updated", payload: {} });
+                return res.status(200).json({ status: "success", msg: "product updated", payload: prodUpdated });
             } else {
                 return res.status(404).json({ status: "error", msg: 'product not found', payload: {} });
             }

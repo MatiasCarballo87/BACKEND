@@ -26,7 +26,7 @@ let sendProducts = () => {
                     <td>${product.thumbnail}</td>
                     <td>${product.code}</td>
                     <td>${product.stock}</td>
-                    <td>${product.id}</td>
+                    <td>${product._id}</td>
                 </tr>
                 </tbody>
             </table>    

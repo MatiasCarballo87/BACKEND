@@ -1,6 +1,11 @@
 import  productsModel  from "../dao/models/products.model.js";
 
 class ProductsService {
+
+    async getAllProducts() {
+        const products = await productsModel.find({}).lean();
+        return products;
+    };
     
     async getProducts(queryParams) {
         const { page = 1, limit = 10, sort, category, stock } = queryParams;
@@ -14,12 +19,12 @@ class ProductsService {
             limit: parseInt(limit),
             sort: sort ? { price: sort } : null
         }
-
         const result = await productsModel.paginate(query, options);
-
+        
         const response = {
             status: "success",
             payload: result.docs,
+            totalDocs: result.totalDocs,
             totalPages: result.totalPages,
             prevPage: result.hasPrevPage ? result.prevPage : null,
             nextPage: result.hasNextPage ? result.nextPage : null,
@@ -29,6 +34,7 @@ class ProductsService {
             prevLink: result.hasPrevPage ? `/api/products?limit=${limit}&page=${result.prevPage}` : null,
             nextLink: result.hasNextPage ? `/api/products?limit=${limit}&page=${result.nextPage}` : null,
         };
+
         return response;
     };
 

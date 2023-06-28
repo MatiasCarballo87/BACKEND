@@ -5,9 +5,9 @@ export const cartsRouter = express.Router();
 
 cartsRouter.post('/', async (req, res) => {
     try {
-        const { products } = req.body;
+        const { cart } = req.body;
         const cartCreated = await cartsServices.createCart({
-            products,
+            cart,
         });
         return res.status(201).json({ status: "success", msg: "cart created", payload: cartCreated });
     } catch(e) {
@@ -20,7 +20,7 @@ cartsRouter.post('/', async (req, res) => {
     }
 });
 
-cartsRouter.get('/:_cid', async (req, res) => {
+/* cartsRouter.get('/:_cid', async (req, res) => {
     try{
         const { _cid } = req.params;
         const cartId = await cartsServices.getCartById(_cid);
@@ -37,12 +37,28 @@ cartsRouter.get('/:_cid', async (req, res) => {
             payload: {},
         });
     }
-});
+}); */
+
+cartsRouter.get("/:_cid", async (req, res) => {
+    try {
+        const { _cid } = req.params;
+        const cartId = await cartsServices.getCartById(_cid);
+        console.log(cartId)
+        const productsInCart = cartId.products.map((prod) => prod.toObject());
+        return res.status(200).render("carts.handlebars", {productsInCart});
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+        status: "error",
+        msg: "something went wrong :(",
+        payload: {},
+    });
+}});
 
 cartsRouter.post('/:_cid/product/:_pid', async (req, res) => {
     try {
         const { _cid, _pid } = req.params;
-        const prodsInCart = cartsServices.addProdToCartById(_cid, _pid);
+        const prodsInCart = await cartsServices.addProdToCartById(_cid, _pid);
         if (prodsInCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
         }else {
@@ -63,7 +79,7 @@ cartsRouter.put('/:_cid', async (req, res) => {
     try {
         const { _cid, } = req.params;
         const { products } = req.body;
-        const cart = cartsServices.updateCart(_cid, products);
+        const cart = await cartsServices.updateCart(_cid, products);
         if (cart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: cart });
         }else {
@@ -83,7 +99,7 @@ cartsRouter.put('/:_cid/product/:_pid', async (req, res) => {
     try {
         const { _cid, _pid } = req.params;
         const { quantity } = req.body;
-        const prodsInCart = cartsServices.updateProdQuant(_cid, _pid, quantity);
+        const prodsInCart = await cartsServices.updateProdQuant(_cid, _pid, quantity);
         if (prodsInCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
         }else {
@@ -102,7 +118,7 @@ cartsRouter.put('/:_cid/product/:_pid', async (req, res) => {
 cartsRouter.delete('/:_cid/product/:_pid', async (req, res) => {
     try {
         const { _cid, _pid } = req.params;
-        const prodsInCart = cartsServices.removeProdInCart(_cid, _pid);
+        const prodsInCart = await cartsServices.removeProdInCart(_cid, _pid);
         if (prodsInCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
         }else {
@@ -121,7 +137,7 @@ cartsRouter.delete('/:_cid/product/:_pid', async (req, res) => {
 cartsRouter.delete('/:_cid', async (req, res) => {
     try {
         const { _cid } = req.params;
-        const cleanCart = cartsServices.emptyCart(_cid);
+        const cleanCart = await cartsServices.emptyCart(_cid);
         if (cleanCart) {
             return res.status(201).json({ status: "success", msg: "added product", payload: cleanCart });
         }else {

@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { MessagesModel } from "../dao/models/messages.model.js";
+import { productsService } from "../services/products.services.js";
 
 export function connectSocketServer(httpServer) {
     const socketServer = new Server(httpServer);
@@ -21,14 +22,14 @@ export function connectSocketServer(httpServer) {
       });
     });
 
-    /* socketServer.on("connection", (socket)=> {
-        const allProd = prodMan.getProducts();
+    socketServer.on("connection", async (socket)=> {
+        const allProd = await productsService.getAllProducts();
         socket.emit("allProducts", allProd);
         socket.on("addProd", (formData) => {
-            prodMan.addProduct(formData);
+          productsService.addProduct(formData);
         });
-        socket.on("delProd", (id) => {
-            prodMan.deleteProduct(id);
+        socket.on("delProd", async (id) => {
+          await productsService.deleteProduct(id);
         });
-    }); */
+    });
 };
