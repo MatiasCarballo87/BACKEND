@@ -2,11 +2,11 @@ import express from "express";
 import { userModel } from "../dao/models/user.model.js";
 export const loginRouter = express.Router();
 
-loginRouter.get("/login",  (_, res) => {
-    res.render("login");
+loginRouter.get("/",  (_, res) => {
+    return res.render("login.handlebars");
 });
 
-loginRouter.post("/login", async (req, res) => {
+loginRouter.post("/", async (req, res) => {
     try {
         const { email, password } = req.body;
         if(!email || !password) {
@@ -17,7 +17,7 @@ loginRouter.post("/login", async (req, res) => {
         req.session.firstName = logUser.firstName;
         req.session.email = logUser.email;
         req.session.admin = logUser.admin;
-        return res.redirect('/products');
+        return res.redirect("/products");
         } else {
             return res.status(400).json({ status: "error", msg: "wrong email or password", payload: {} });
         }

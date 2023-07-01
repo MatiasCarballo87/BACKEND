@@ -1,14 +1,18 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import { views } from "./routes/views.router.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import { __dirname } from "./config.js";
 import { productsRouter } from "./routes/products.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
+import { loginRouter } from "./routes/login.router.js";
+import { registerRouter } from "./routes/register.router.js";
+import { logoutRouter } from "./routes/logout.router.js";
+import { realTimeProductsRouter } from "./routes/realtimeproducts.router.js";
+import { chatRouter } from "./routes/chat.router.js";
+import { productsDBRouter } from "./routes/productsDB.router.js";
 import { connectSocketServer } from "./utils/socketServer.js";
 import { connectMongo } from "./utils/dbConnection.js";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import { loginRouter } from "./routes/login.router.js";
 
 const app = express();
 const PORT = 8080;
@@ -35,7 +39,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+    console.log(`http://localhost:${PORT}/login`);
 });
 
 connectSocketServer(httpServer);
@@ -43,7 +47,11 @@ connectSocketServer(httpServer);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/login', loginRouter);
-app.use('/', views);
+app.use('/logout', logoutRouter);
+app.use('/register', registerRouter);
+app.use('/realtimeproducts', realTimeProductsRouter);
+app.use('/chat', chatRouter);
+app.use('/products', productsDBRouter);
 
 app.get('/session', (req, res) => {
     if (req.session.cont) {

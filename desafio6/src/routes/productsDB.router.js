@@ -1,33 +1,11 @@
-import express from 'express';
-import { productsService } from '../services/products.services.js';
+import express from "express";
 import { productsRenderService } from '../services/products.render.services.js';
-export const views = express.Router();
+import { isUser } from "../middlewares/auth.js";
+export const productsDBRouter = express.Router();
 
-
-views.get("/", async (_, res) => {
+productsDBRouter.get("/", isUser, async (req, res) => {
     try {
-        const allProd = await productsService.getAllProducts();
-        return res.status(200).render("home.handlebars", {allProd});
-    } catch(e) {
-        console.log(e);
-        return res.status(500).json({
-        status: "error",
-        msg: "something went wrong :(",
-        payload: {},
-      });
-    }
-});
-
-views.get("/realtimeproducts", (_, res) => {
-    return res.status(200).render("realTimeProducts.handlebars");
-});
-
-views.get("/chat", (_, res) => {
-    return res.status(200).render("chat.handlebars");
-});
-
-views.get("/products", async (req, res) => {
-    try {
+        const user = req.session.firstName;
         const  { limit, pages, category, orderBy }  = req.query;
         const productsPage = await productsRenderService.getAllProductsRender(limit, pages, category, orderBy);
         const { totalPages, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage } = productsPage;
@@ -41,6 +19,7 @@ views.get("/products", async (req, res) => {
             hasNextPage,
             prevPage,
             nextPage,
+            user,
         });
     } catch(e) {
         console.log(e);
@@ -50,4 +29,3 @@ views.get("/products", async (req, res) => {
         payload: {},
     });
 }});
-

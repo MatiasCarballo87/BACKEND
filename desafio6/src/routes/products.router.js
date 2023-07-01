@@ -1,8 +1,9 @@
 import express from "express";
 import { productsService } from "../services/products.services.js";
+import { isAdmin } from "../middlewares/auth.js";
 export const productsRouter = express.Router();
 
-productsRouter.get('/', async (req, res) => {
+productsRouter.get('/', isAdmin, async (req, res) => {
     try {
         const queryParams = req.query;
         const response = await productsService.getProducts(queryParams);
@@ -17,7 +18,7 @@ productsRouter.get('/', async (req, res) => {
     }
 });
 
-productsRouter.get('/:_pid', async (req, res) => {
+productsRouter.get('/:_pid', isAdmin, async (req, res) => {
     try {
         const { _pid } = req.params;
         const prod_Id = await productsService.getProductById(_pid);
@@ -36,7 +37,7 @@ productsRouter.get('/:_pid', async (req, res) => {
     }
 });
 
-productsRouter.post('/', async (req, res) => {
+productsRouter.post('/', isAdmin, async (req, res) => {
     try {
         const { title, description, code, price, stock, category, thumbnail } = req.body;
         if (!title || !description || !code || !price || !stock || !category) {
@@ -72,7 +73,7 @@ productsRouter.post('/', async (req, res) => {
     }
 });
     
-productsRouter.put('/:_pid', async (req, res) => {
+productsRouter.put('/:_pid',isAdmin,  async (req, res) => {
     try {
         const { _pid } = req.params;
         const { title, description, code, price, stock, category, thumbnail } = req.body;
@@ -112,7 +113,7 @@ productsRouter.put('/:_pid', async (req, res) => {
     }
 });
 
-productsRouter.delete('/:_pid', async (req, res) => {
+productsRouter.delete('/:_pid', isAdmin, async (req, res) => {
     try {
         const { _pid } = req.params;
         const resultdelete = await productsService.deleteProduct(_pid);

@@ -1,6 +1,17 @@
-<h1>Vista de Productos</h1>
+<h1>Products View</h1>
 
-<h2>Agregue un Producto a su Carrito</h2>
+<h2>Welcome!</h2>
+
+<div class="user-cont">
+    <span class="user">{{user}}: </span>
+    {{#if isAdmin}}
+        <span>Admin</span>
+    {{else}}
+        <span>User</span>
+    {{/if}}
+    <button><a href="/logout">Logout</a></button>
+</div>
+
 
 {{#each productsRender}}
     <table>

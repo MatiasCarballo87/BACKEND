@@ -22,7 +22,6 @@ export const userModel = model(
         max: 100,
         unique: true,
       },
-  
       admin: {
         default: false,
         type: Boolean,
