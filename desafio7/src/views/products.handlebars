@@ -1,0 +1,54 @@
+<h1>Products View</h1>
+
+<h2>Welcome!</h2>
+
+<div class="user-cont">
+    <span class="user">{{user}}: </span>
+    {{#if isAdmin}}
+        <span>Admin</span>
+    {{else}}
+        <span>User</span>
+    {{/if}}
+    <button><a href="/logout">Logout</a></button>
+</div>
+
+
+{{#each productsRender}}
+    <table>
+        <tbody>
+        <tr>
+            <th>Name: </th>
+            <th>Description: </th>
+            <th>Price: </th>
+            <th>Thumbnail: </th>
+            <th>Code: </th>
+            <th>Stock: </th>
+            <th>Category: </th>
+            <th>Id: </th>
+        </tr>
+        <tr>
+            <td><strong>{{this.title}}</strong></td>
+            <td>{{this.description}}</td>
+            <td>$ {{this.price}}</td>
+            <td>{{this.thumbnail}}</td>
+            <td>{{this.code}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.category}}</td>
+            <td>{{this._id}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <span>
+        <input type="submit" value="Add to Cart" class="button"/>
+    </span>    
+{{/each}}
+
+<p>Total Products: {{this.totalDocs}}</p>
+<p>Total Pages: {{this.totalPages}}</p>
+<p>Page: {{this.page}}</p>
+{{#if hasPrevPage}}
+<button>Prev page <a  href="http://localhost:8080/products?pages={{prevPage}}">{{prevPage}}</a></button>
+{{/if}}
+{{#if hasNextPage}}
+<button>Next page <a  href="http://localhost:8080/products?pages={{nextPage}}">{{nextPage}}</a></button>
+{{/if}}
