@@ -1,6 +1,6 @@
-import { productsMongoose } from "./mongoose/products.mongoose.js";
+import { productsMongoose } from "./models/products.mongoose.js";
 
-class ProductsModel {
+class Products {
 
     async getAllProductsRender(limit, pages, category, orderBy) {
         const query = {};
@@ -21,7 +21,6 @@ class ProductsModel {
         });
 
         return queryResult;
-        
     };
 
     async getAll() {
@@ -56,7 +55,6 @@ class ProductsModel {
             prevLink: result.hasPrevPage ? `/api/products?limit=${limit}&page=${result.prevPage}` : null,
             nextLink: result.hasNextPage ? `/api/products?limit=${limit}&page=${result.nextPage}` : null,
         };
-
         return response;
     };
 
@@ -105,4 +103,4 @@ class ProductsModel {
 
 }
 
-export const productsModel = new ProductsModel();
+export const products = new Products();

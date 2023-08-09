@@ -4,6 +4,7 @@ class ProductsService {
 
     async getAllProductsRender(limit, pages, category, orderBy) {
         const renderProds = await productsModel.getAllProductsRender(limit, pages, category, orderBy);
+        /* console.log(renderProds); */
         return renderProds;
     }
 

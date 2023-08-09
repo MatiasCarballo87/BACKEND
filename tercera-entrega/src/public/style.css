@@ -103,3 +103,9 @@ td {
 .git2 {
     color: white;
 }
+
+.registerok {
+    display: block;
+    text-align: center;
+    padding: 20px;
+}
