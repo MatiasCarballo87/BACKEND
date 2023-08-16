@@ -1,20 +1,28 @@
 import { cartsService } from "../services/carts.service.js";
+import CustomError from "../services/errors/custom-error.js";
+import EErrors from "../services/errors/enums.js";
 
 class CartsController {
 
     createCart = async (req, res) => {
         try {
             const { cart } = req.body;
-            const cartCreated = await cartsService.createCart({
-                cart,
-            });
+            const cartCreated = await cartsService.createCart({cart});
+            if (!cart) {
+                return  CustomError.createError({
+                    name: "TYPE ERROR",
+                    cause: "Something incomplete",
+                    message: "Failed Cart creation",
+                    code: EErrors.CART_ERROR,
+                });
+            }
             return res.status(201).json({ status: "success", msg: "cart created", payload: cartCreated });
         } catch(e) {
-            console.log(e);
+            console.log(e.cause);
             return res.status(500).json({
-                status: "error",
-                msg: "something went wrong :(",
-                payload: {},
+            status: "Error",
+            error: e.name,
+            cause: e.cause,
             });
         }
     };
@@ -23,21 +31,26 @@ class CartsController {
         try{
             const { _cid } = req.params;
             const cartId = await cartsService.getCartById(_cid);
-            if (cartId) {
+            if (cartId){
                 return res.status(200).json({ status: "success", msg: "ID cart finded", payload: cartId });
-            }else {
-                return res.status(404).json({ status: "error", msg: "ID cart does not exist", payload: {} });
+            } else {
+                return  CustomError.createError({
+                name: "ID TYPE ERROR",
+                cause: "User put wrong ID",
+                message: "ID cart does not exist",
+                code: EErrors.ID_ERROR,
+                });
             }
-        } catch(e) {
-            console.log(e);
+        } catch (e) {
+            console.log(e.cause);
             return res.status(500).json({
-                status: "error",
-                msg: "something went wrong :(",
-                payload: {},
+            status: "Error",
+            error: e.name,
+            cause: e.cause,
             });
         }
     };
-
+   
     getCartByIdRender = async (req, res) => {
         try {
             const { _cid } = req.params;
@@ -58,16 +71,21 @@ class CartsController {
             const { _cid, _pid } = req.params;
             const prodsInCart = await cartsService.addProdToCartById(_cid, _pid);
             if (prodsInCart) {
-            return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
-        }else {
-            return res.status(404).json({ status: "error", msg: "ID cart does not exist", payload: {} });
-        }
+                return res.status(201).json({ status: "success", msg: "added product", payload: prodsInCart });
+            }else {
+                return  CustomError.createError({
+                    name: "PRODUCT ERROR",
+                    cause: "User put wrong product ID",
+                    message: "ID product does not exist",
+                    code: EErrors.PRODUCT_ERROR,
+                });    
+            }
         } catch(e) {
-            console.log(e);
+            console.log(e.cause);
             return res.status(500).json({
-                status: "error",
-                msg: "something went wrong :(",
-                payload: {},
+            status: "Error",
+            error: e.name,
+            cause: e.cause,
             });
         }
     };
