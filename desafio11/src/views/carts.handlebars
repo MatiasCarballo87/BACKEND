@@ -1,0 +1,28 @@
+<h1>Products In Cart</h1>
+
+{{#each cartId}}
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Name: </th>
+            <th>Description: </th>
+            <th>Price: </th>
+            <th>Quantity: </th>
+            <th>Id: </th>
+        </tr>
+        <tr>
+            <td><strong>{{this.product.title}}</strong></td>
+            <td>{{this.product.description}}</td>
+            <td>$ {{this.product.price}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.product._id}}</td>
+        </tr>
+        </tbody>
+    </table>    
+
+{{/each}}
+
+<input type="submit" value="Buy Cart" class="button"/>
+
+<a href="/products">Go to Home</a>

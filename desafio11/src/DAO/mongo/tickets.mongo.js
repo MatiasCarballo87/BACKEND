@@ -1,11 +1,10 @@
 import { ticketsMongoose } from "./models/ticket.mongoose.js";
-import { v4 as uuidv4 } from 'uuid';
 
 class Tickets {
 
     async createTicket() {
         const ticket = {
-            code: uuidv4(),
+            code,
             purchase_datetime: new Date().toLocaleString(),
             amount,
             purchaser: req.user.email

@@ -1,0 +1,4 @@
+{"level":"info","message":{"__v":1,"_id":"64c02276412df1988797ab9d","products":[{"_id":"64c026e3bb742d4ab2ac50e5","product":"6488c5c9f8bfc7472dda5ed1","quantity":4}]}}
+warn: 20:23:48272 New user created
+error: 21:26:41626 Not updated product, priority to fix!!
+warn: 21:29:11529 New user created
